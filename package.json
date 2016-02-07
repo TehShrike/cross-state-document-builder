@@ -1,0 +1,26 @@
+{
+  "name": "cross-state-document-builder",
+  "version": "1.0.0",
+  "description": "Build a document with a Redux reducer, edited across many abstract-state-router states, defined by fsm",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TehShrike/cross-state-document-builder.git"
+  },
+  "keywords": [
+    "fsm",
+    "redux",
+    "abstract-state-router",
+    "browserify",
+    "state"
+  ],
+  "author": "TehShrike",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/TehShrike/cross-state-document-builder/issues"
+  },
+  "homepage": "https://github.com/TehShrike/cross-state-document-builder#readme"
+}
