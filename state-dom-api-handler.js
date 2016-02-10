@@ -39,7 +39,7 @@ function addToArrayAndReturnRemover(ary, thingy) {
 	ary.push(thingy)
 
 	return function removeListener() {
-		var index = ary.find(thingy)
+		var index = ary.indexOf(thingy)
 		if (index !== -1) {
 			ary.splice(index, 1)
 		}
