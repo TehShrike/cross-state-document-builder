@@ -3,6 +3,7 @@ const tapBrowserColor = require('tap-browser-color')
 const beginWatchingRouter = require('./')
 const stateFactory = require('abstract-state-router/test/helpers/test-state-factory')
 const EventEmitter = require('events').EventEmitter
+const makeAsrStateWatcher = require('asr-active-state-watcher')
 
 if (typeof window !== 'undefined') {
 	tapBrowserColor()
@@ -67,8 +68,8 @@ test('initial use case', t => {
 	t.timeoutAfter(1000)
 
 	const testState = makeTestStates(t)
-
-	const createDocument = beginWatchingRouter(testState.stateRouter)
+	const stateWatcher = makeAsrStateWatcher(testState.stateRouter)
+	const createDocument = beginWatchingRouter(stateWatcher)
 
 	function reducer(state, action) {
 		switch(action.type) {

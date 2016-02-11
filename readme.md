@@ -2,9 +2,15 @@
 
 For when you want the user to build documents in an application built with [abstract-state-router](https://github.com/TehShrike/abstract-state-router), but don't want them to be tied to a particular state.
 
+Initialize with a [asr-active-state-watcher](https://github.com/TehShrike/asr-active-state-watcher).
+
 ```js
 
-const createDocument = beginWatchingRouter(stateRouter)
+const makeAsrStateWatcher = require('asr-active-state-watcher')
+const stateWatcher = makeAsrStateWatcher(stateRouter)
+
+const createDocument = beginWatchingRouter(stateWatcher)
+
 
 function reducer(state, action) {
 	switch(action.type) {
