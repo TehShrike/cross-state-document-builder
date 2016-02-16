@@ -1,6 +1,6 @@
 const test = require('tape-catch')
 const tapBrowserColor = require('tap-browser-color')
-const beginWatchingRouter = require('./')
+const beginWatchingRouter = require('./').default
 const stateFactory = require('abstract-state-router/test/helpers/test-state-factory')
 const EventEmitter = require('events').EventEmitter
 const makeAsrStateWatcher = require('asr-active-state-watcher')
