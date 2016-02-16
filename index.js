@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux'
-const createDispatchHandler = require('./dispatch-handler')
+import createDispatchHandler from './dispatch-handler.js'
 
 module.exports = function createDocumentManager(domAwareness, globalMiddlewares = []) {
 	return function createDocument(reducer, initialState, documentMiddlewares = []) {
