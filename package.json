@@ -1,6 +1,6 @@
 {
   "name": "cross-state-document-builder",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Build a document with a Redux reducer, edited across many abstract-state-router states",
   "main": "es5.js",
   "scripts": {
