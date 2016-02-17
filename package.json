@@ -4,9 +4,7 @@
   "description": "Build a document with a Redux reducer, edited across many abstract-state-router states",
   "main": "es5.js",
   "scripts": {
-    "test": "npm run build:test && node test-build.js",
-    "test:browser": "npm run build:test && open test.html",
-    "build:test": "browserify test.js -o test-build.js -d",
+    "test": "npm run build && node test-build.js",
     "build": "babel index.js --presets es2015 --out-file es5.js"
   },
   "repository": {
