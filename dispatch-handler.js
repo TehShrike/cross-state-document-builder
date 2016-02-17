@@ -1,6 +1,6 @@
-import value from 'dom-value'
+var value = require('dom-value')
 
-export default function watchForDispatches(magicalDomThingy, store) {
+module.exports = function watchForDispatches(magicalDomThingy, store) {
 	function dispatchListener(actionType, payload) {
 		var action = {}
 		if (payload && typeof payload === 'object') {
