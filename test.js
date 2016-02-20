@@ -1,6 +1,6 @@
 const test = require('tape-catch')
 const tapBrowserColor = require('tap-browser-color')
-const beginWatchingRouter = require('./es5')
+const crossStateDocumentBuilder = require('./es5')
 const stateFactory = require('abstract-state-router/test/helpers/test-state-factory')
 const EventEmitter = require('events').EventEmitter
 const makeAsrStateWatcher = require('asr-active-state-watcher/es5')
@@ -69,12 +69,10 @@ test('initial use case', t => {
 
 	const testState = makeTestStates(t)
 	const stateWatcher = makeAsrStateWatcher(testState.stateRouter)
-	const createDocument = beginWatchingRouter(stateWatcher)
+	const createDocument = crossStateDocumentBuilder(stateWatcher)
 
 	function reducer(state, action) {
 		switch(action.type) {
-			case '@@redux/INIT':
-				return state
 			case 'INCREMENT':
 				return {
 					num: state.num + 1
@@ -83,8 +81,9 @@ test('initial use case', t => {
 				return {
 					num: state.num - 1
 				}
+			default:
+				return state
 		}
-		throw new Error('FFFUUUUU')
 	}
 
 	testState.stateRouter.once('stateChangeEnd', () => {
@@ -100,6 +99,68 @@ test('initial use case', t => {
 			testState.emitters.parent1child1.fire('dispatch', 'DECREMENT')
 
 			t.equal(doc.store.getState().num, 2)
+
+			doc.finishDocument()
+
+			t.end()
+		})
+
+		testState.stateRouter.go('parent1.child2')
+	})
+
+	testState.stateRouter.go('parent1.child1')
+})
+
+test('document middleware', t => {
+	t.timeoutAfter(1000)
+	t.plan(6)
+
+	var documentMiddlewareCalled = false
+
+	function globalMiddleware(o) {
+		return next => action => {
+			t.ok(documentMiddlewareCalled, 'Document middleware was already called')
+			t.equal(action.type, 'INCREMENT')
+			t.equal(o.getState().num, 0)
+			next(action)
+		}
+	}
+
+	const testState = makeTestStates(t)
+	const stateWatcher = makeAsrStateWatcher(testState.stateRouter)
+	const createDocument = crossStateDocumentBuilder(stateWatcher, [globalMiddleware])
+
+	function reducer(state, action) {
+		switch(action.type) {
+			case 'INCREMENT':
+				return {
+					num: state.num + 1
+				}
+			case 'DECREMENT':
+				return {
+					num: state.num - 1
+				}
+			default:
+				return state || { num: 0 }
+		}
+	}
+
+	function documentMiddleware(o) {
+		return next => action => {
+			documentMiddlewareCalled = true
+			t.equal(action.type, 'INCREMENT')
+			t.equal(o.getState().num, 0)
+			next(action)
+		}
+	}
+
+	testState.stateRouter.once('stateChangeEnd', () => {
+		const doc = createDocument(reducer, { num: 0 }, [documentMiddleware])
+
+		testState.emitters.parent1child1.fire('dispatch', 'INCREMENT')
+
+		testState.stateRouter.once('stateChangeEnd', () => {
+			t.equal(doc.store.getState().num, 1)
 
 			doc.finishDocument()
 
